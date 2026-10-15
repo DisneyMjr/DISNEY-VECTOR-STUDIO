@@ -1214,7 +1214,7 @@ proptest! {
 
     #[test]
     fn mutated_pdf_presets_never_panic(cut in 0usize..20_000, edits in prop::collection::vec(arb_edit(), 0..10)) {
-        let text = saved("pdf.preset.export", json!({"names": ["VectorCraft Default", "Smallest File Size", "PDF/X-4:2010"]}));
+        let text = saved("pdf.preset.export", json!({"names": ["VectorSmart Default", "Smallest File Size", "PDF/X-4:2010"]}));
         pdf_presets("mutated pdf presets", &mutate_text(&text, cut, &edits))?;
     }
 }
@@ -1404,7 +1404,7 @@ proptest! {
 /// PostScript is read.
 fn foreign_eps_sample() -> Vec<u8> {
     let mut bytes = eps_sample();
-    let marker = b"%VectorCraft_BeginData: native";
+    let marker = b"%VectorSmart_BeginData: native";
     let at = bytes.windows(marker.len()).position(|w| w == marker).unwrap();
     bytes[at + marker.len() - 1] = b'x';
     bytes

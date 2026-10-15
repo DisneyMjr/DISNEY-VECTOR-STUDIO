@@ -12,7 +12,7 @@ fn prefs_path_with(os: &str, legacy: bool, env: impl Fn(&str) -> Option<OsString
         // Never fall back to DrawCraft's real profile when the isolated file does not exist.
         return (!legacy && !root.is_empty()).then(|| PathBuf::from(root).join("ui.json"));
     }
-    let (name, lower) = if legacy { ("DrawCraft", "drawcraft") } else { ("VectorCraft", "vectorcraft") };
+    let (name, lower) = if legacy { ("DrawCraft", "drawcraft") } else { ("VectorSmart", "vectorcraft") };
     let base = match os {
         "macos" => env("HOME").map(|p| PathBuf::from(p).join("Library/Application Support").join(name)),
         "windows" => env("APPDATA").map(|p| PathBuf::from(p).join(name)),
@@ -54,9 +54,9 @@ mod tests {
 
     #[test]
     fn unset_override_keeps_platform_paths_and_legacy_migration() {
-        assert_eq!(prefs_path_with("macos", false, environment), Some("/user/Library/Application Support/VectorCraft/ui.json".into()));
+        assert_eq!(prefs_path_with("macos", false, environment), Some("/user/Library/Application Support/VectorSmart/ui.json".into()));
         assert_eq!(prefs_path_with("macos", true, environment), Some("/user/Library/Application Support/DrawCraft/ui.json".into()));
-        assert_eq!(prefs_path_with("windows", false, environment), Some("/roaming/VectorCraft/ui.json".into()));
+        assert_eq!(prefs_path_with("windows", false, environment), Some("/roaming/VectorSmart/ui.json".into()));
         assert_eq!(prefs_path_with("linux", false, environment), Some("/xdg-config/vectorcraft/ui.json".into()));
         assert_eq!(
             prefs_path_with("linux", true, |key| if key == "HOME" { environment(key) } else { None }),

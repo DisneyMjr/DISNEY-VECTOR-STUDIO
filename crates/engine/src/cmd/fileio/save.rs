@@ -107,7 +107,7 @@ pub fn templates_folder(prefs: &Prefs) -> Option<String> {
     if !prefs.templates_folder.is_empty() {
         return Some(prefs.templates_folder.clone());
     }
-    Some(documents_folder()?.join("VectorCraft Templates").to_string_lossy().to_string())
+    Some(documents_folder()?.join("VectorSmart Templates").to_string_lossy().to_string())
 }
 
 /// The Templates folder for a file dialog to start in (#703): made when it's missing; where it
@@ -797,7 +797,7 @@ mod tests_folders {
         let _ = std::fs::remove_dir_all(&base);
         std::fs::create_dir_all(&base).unwrap();
         let mut prefs = crate::Prefs::default();
-        let wanted = base.join("Modelli").join("VectorCraft Templates");
+        let wanted = base.join("Modelli").join("VectorSmart Templates");
         prefs.templates_folder = wanted.to_string_lossy().into_owned();
         assert_eq!(super::templates_dialog_folder(&prefs).map(PathBuf::from), Some(wanted.clone()));
         assert!(wanted.is_dir(), "made");

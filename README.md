@@ -8,7 +8,7 @@
 </p>
 
 
-<h1 align="center">VectorCraft</h1>
+<h1 align="center">VectorSmart</h1>
 
 <p align="center">
   <b>Vector illustration; an open-source, clean-room reimplementation of Adobe Illustrator, rebuilt in pure Rust.</b>
@@ -32,7 +32,7 @@
 </p>
 
 <p align="center">
-  <a href="https://getartcraft.com/apps/vectorcraft"><b>VectorCraft on getartcraft.com</b></a> ·
+  <a href="https://getartcraft.com/apps/vectorcraft"><b>VectorSmart on getartcraft.com</b></a> ·
   <a href="https://getartcraft.com/">ArtCraft</a> ·
   <a href="https://getartcraft.com/apps">All Crafting Apps</a>
 </p>
@@ -40,7 +40,7 @@
 <br>
 
 <p align="center">
-  <img src="docs/images/shot-1-neon.png" alt="VectorCraft editing the Neon Drive poster: the title is selected, the Appearance panel shows the settings of its live Outer Glow, and the Properties panel shows its character settings" width="100%">
+  <img src="docs/images/shot-1-neon.png" alt="VectorSmart editing the Neon Drive poster: the title is selected, the Appearance panel shows the settings of its live Outer Glow, and the Properties panel shows its character settings" width="100%">
   <br><sub><b>Neon Drive</b>: a Pathfinder-cut sun, live Outer Glow on the type and grid, and clipping masks · <code>examples/neon-drive.vectorcraft</code></sub>
 </p>
 
@@ -50,8 +50,8 @@
 
 <p align="center">
   <a href="#a-look-around">A look around</a> ·
-  <a href="#made-in-vectorcraft">Made in VectorCraft</a> ·
-  <a href="#why-vectorcraft">Why VectorCraft</a> ·
+  <a href="#made-in-vectorcraft">Made in VectorSmart</a> ·
+  <a href="#why-vectorcraft">Why VectorSmart</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#status">Status</a> ·
   <a href="#downloads">Downloads</a> ·
@@ -84,10 +84,10 @@
 </tr>
 </table>
 
-## Made in VectorCraft
+## Made in VectorSmart
 
-Every piece below was built entirely through VectorCraft's command API, the same one the MCP server
-exposes to agents, and exported by VectorCraft's own renderer. The source files are in
+Every piece below was built entirely through VectorSmart's command API, the same one the MCP server
+exposes to agents, and exported by VectorSmart's own renderer. The source files are in
 [`examples/`](examples).
 
 <table>
@@ -129,7 +129,7 @@ exposes to agents, and exported by VectorCraft's own renderer. The source files 
 </tr>
 </table>
 
-## Why VectorCraft
+## Why VectorSmart
 
 - **Familiar.** Illustrator's layout, tools, menus, panels and shortcuts: the Pen, Direct Selection,
   Pathfinder, Smart Guides, Appearance, Swatches, Layers and more. You already know how to use it.
@@ -157,7 +157,7 @@ cargo run --release -p vectorcraft -- --control 7979        # + JSON control cha
 cargo run --release -p vectorcraft-cli -- mcp               # MCP server (stdio)
 cargo run --release -p vectorcraft-cli -- run --in examples/ribbons.vectorcraft --export out.pdf   # headless batch
 cargo run --release -p vectorcraft-cli -- bench examples/neon-drive.vectorcraft                   # render timing
-cargo xtask bundle                                        # dist/VectorCraft.app (macOS)
+cargo xtask bundle                                        # dist/VectorSmart.app (macOS)
 cd apps/vectorcraft-web && trunk build --release            # web build → dist/web
 cargo xtask ci                                            # fmt, clippy, tests, layering, wasm, vendor names
 ```
@@ -166,9 +166,9 @@ Japanese fonts come from [storytold/craft-fonts](https://github.com/storytold/cr
 build input (releases always use it): `CRAFT_FONTS_DIR="$PWD/../craft-fonts" cargo run --release -p vectorcraft` (an absolute path).
 Without it, Japanese text uses the installed system fonts. See [`docs/development.md`](docs/development.md#fonts-craft-fonts-optional-build-input).
 
-On machines with two graphics processors, VectorCraft renders on the power-saving (integrated) one by default on
+On machines with two graphics processors, VectorSmart renders on the power-saving (integrated) one by default on
 Windows and macOS, and on the one the desktop runs on under Linux. To choose, use **Preferences › Performance ›
-Graphics Processor** and restart. If a graphics processor can't show the window, VectorCraft starts again on the
+Graphics Processor** and restart. If a graphics processor can't show the window, VectorSmart starts again on the
 next one. To pick one when starting the app, set `WGPU_POWER_PREF=high` (or `low`), or `WGPU_ADAPTER_NAME` to part of
 its name, such as `WGPU_ADAPTER_NAME=nvidia` (see [`docs/development.md`](docs/development.md#desktop-graphics-processor)).
 
@@ -178,7 +178,7 @@ drag-and-drop, set **Preferences › Performance › Linux Display Server** to *
 the app with `WAYLAND_DISPLAY= vectorcraft`: the window then opens through XWayland, where drops work
 (see [`docs/development.md`](docs/development.md#linux-wayland-and-x11)).
 
-On Linux under KDE Plasma 6.3 or later with Wayland, a drawing tablet's pen moves the cursor but VectorCraft doesn't
+On Linux under KDE Plasma 6.3 or later with Wayland, a drawing tablet's pen moves the cursor but VectorSmart doesn't
 respond to it yet (#491). Open the window through XWayland instead, with the same preference or `WAYLAND_DISPLAY= vectorcraft` (see
 [`docs/development.md`](docs/development.md#linux-wayland-and-x11)).
 
@@ -202,7 +202,7 @@ For the experimental, unsupported 64-bit Windows 7 build, see [Windows 7 instruc
 
 ## Status
 
-VectorCraft is under active development. [**ROADMAP.md**](ROADMAP.md) has the stage, the numbers by dimension
+VectorSmart is under active development. [**ROADMAP.md**](ROADMAP.md) has the stage, the numbers by dimension
 and what's next; [`docs/target-app-parity.md`](docs/target-app-parity.md) the full parity assessment and
 [`docs/gaps.md`](docs/gaps.md) the ranked list of what's missing.
 
@@ -215,7 +215,7 @@ files (SVG, PDF and PDF-compatible `.ai` with PDF/X, EPS, DXF, EMF/WMF, raster f
 Affinity documents (`.af` from Affinity 3, `.afdesign`, `.afpub` and, by their content, `.afphoto` from Affinity 1 and 2) open
 and place natively: layers, groups, artboards and pages, curves and shapes, fills, gradients and strokes, clipping
 and masks, text and images, with what didn't come in (effects, adjustments, brushes, master pages…) listed in the
-import warning; a file whose native data can't be read opens as its embedded preview, saying why. VectorCraft
+import warning; a file whose native data can't be read opens as its embedded preview, saying why. VectorSmart
 doesn't write Affinity files. Current `.af` validation includes 33 pinned files, native save/reload
 and every-board SVG/PDF/PSD export, with fixes for Affinity 3 artboards, source-backed JPEGs and text runs.
 [Scope and limits](crates/affinity/README.md); [source audit and remaining gaps](docs/affinity-validation.md).
@@ -244,12 +244,12 @@ the UI can be swapped without touching the engine.
 
 Agent and contributor rules (clean-room, the asset policy, no panics in shipped code, quality gates) are in
 [`AGENTS.md`](AGENTS.md); [`docs/development.md`](docs/development.md#robustness-vectorcraft-never-crashes)
-explains how VectorCraft avoids crashing, and [`docs/releasing.md`](docs/releasing.md) how releases are built,
+explains how VectorSmart avoids crashing, and [`docs/releasing.md`](docs/releasing.md) how releases are built,
 signed and published. Every bundled asset is listed with its licence in [`ASSETS.md`](ASSETS.md).
 
 ## Downloads
 
-**New to VectorCraft?** Download it from the [VectorCraft page on getartcraft.com](https://getartcraft.com/apps/vectorcraft). That's the easiest way to install it.
+**New to VectorSmart?** Download it from the [VectorSmart page on getartcraft.com](https://getartcraft.com/apps/vectorcraft). That's the easiest way to install it.
 
 **Want a specific build or format?** On GitHub, the [latest release](https://github.com/storytold/vectorcraft/releases/latest) has every build listed below, and [all releases](https://github.com/storytold/vectorcraft/releases) has earlier versions and their notes. `<ver>` in the file names is the version number, and `SHA256SUMS.txt` lists a checksum for every file.
 
@@ -294,14 +294,14 @@ Installers and executables are code-signed.
 
 ## The Crafting Apps
 
-VectorCraft is one of the **Crafting Apps**: free, open-source creative tools from the
+VectorSmart is one of the **Crafting Apps**: free, open-source creative tools from the
 [ArtCraft](https://getartcraft.com/) team, each written from scratch in Rust and each able to
 stand on its own.
 
 | | App | What it's for | Code | Learn more |
 |:-:|---|---|---|---|
 | <img src="https://raw.githubusercontent.com/storytold/photocraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.photocraft.png" alt="" width="32" height="32"> | **PhotoCraft** | Image editing: layers, masks, type and real PSD files | [GitHub](https://github.com/storytold/photocraft) | [Website](https://getartcraft.com/apps/photocraft) |
-| <img src="https://raw.githubusercontent.com/storytold/vectorcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.vectorcraft.png" alt="" width="32" height="32"> | **VectorCraft** | **Vector illustration · you are here** | [GitHub](https://github.com/storytold/vectorcraft) | [Website](https://getartcraft.com/apps/vectorcraft) |
+| <img src="https://raw.githubusercontent.com/storytold/vectorcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.vectorcraft.png" alt="" width="32" height="32"> | **VectorSmart** | **Vector illustration · you are here** | [GitHub](https://github.com/storytold/vectorcraft) | [Website](https://getartcraft.com/apps/vectorcraft) |
 | <img src="https://raw.githubusercontent.com/storytold/filmcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.filmcraft.png" alt="" width="32" height="32"> | **FilmCraft** | Video editing, color and sound | [GitHub](https://github.com/storytold/filmcraft) | [Website](https://getartcraft.com/apps/filmcraft) |
 | <img src="https://raw.githubusercontent.com/storytold/lightcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.lightcraft.png" alt="" width="32" height="32"> | **LightCraft** | Photo library and raw development | [GitHub](https://github.com/storytold/lightcraft) | [Website](https://getartcraft.com/apps/lightcraft) |
 | <img src="https://raw.githubusercontent.com/storytold/pdfcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.pdfcraft.png" alt="" width="32" height="32"> | **PdfCraft** | Reading, organizing and protecting PDFs | [GitHub](https://github.com/storytold/pdfcraft) | [Website](https://getartcraft.com/apps/pdfcraft) |
@@ -329,7 +329,7 @@ And [**ArtCraft**](https://getartcraft.com/) itself, our AI image and video stud
   <a href="https://discord.gg/artcraft"><b>discord.gg/artcraft</b></a> ·
   <a href="https://getartcraft.com/">getartcraft.com</a> ·
   <a href="https://getartcraft.com/apps">The Crafting Apps</a> ·
-  <a href="https://getartcraft.com/apps/vectorcraft">VectorCraft</a>
+  <a href="https://getartcraft.com/apps/vectorcraft">VectorSmart</a>
 </p>
 
 ## Star history
@@ -338,28 +338,25 @@ And [**ArtCraft**](https://getartcraft.com/) itself, our AI image and video stud
 
 ## License and credits
 
-VectorCraft is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
-Copyright (c) 2026 ArtCraft Team and the VectorCraft contributors. Required notices are in [NOTICE](NOTICE).
+VectorSmart is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
+Copyright (c) 2026 ArtCraft Team and the VectorSmart contributors. Required notices are in [NOTICE](NOTICE).
 
 Bundled fonts, icons, images and other assets keep their own open licenses; each one is listed
 with its author, source and license in [ASSETS.md](ASSETS.md). Release builds also embed the
 fonts of [craft-fonts](https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md) (Japanese,
 Simplified Chinese and Arabic faces; SIL Open Font License 1.1).
 
-The app icon (an engraved dragon on VectorCraft red, `#e8573f`) is the owner's original artwork; its
+The app icon (an engraved dragon on VectorSmart red, `#e8573f`) is the owner's original artwork; its
 palette and files are in [`assets/app-icon/`](assets/app-icon/README.md).
 
 The ArtCraft name, wordmark and logos in [`docs/brand/`](docs/brand/) are trademarks of the
 ArtCraft Team and are not covered by this license. They may be used only unmodified, and only as
-part of this repository and VectorCraft, under [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt).
+part of this repository and VectorSmart, under [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt).
 Forks and modified versions must remove them.
 
-<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. VectorCraft is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>
+<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. VectorSmart is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>
 
 <p align="center">
   <a href="https://getartcraft.com/"><img alt="ArtCraft" src="docs/brand/artcraft-mark.svg" width="28"></a><br>
   <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
 </p>
-#   D I S N E Y - V E C T O R - S T U D I O  
- #   D I S N E Y - V E C T O R - S T U D I O  
- 

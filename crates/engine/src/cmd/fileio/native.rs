@@ -27,7 +27,7 @@ pub const OPTIONS: &[FormatOption] = &[
         name: "version",
         ty: "integer",
         default: "4",
-        description: "the format version to write: 4 (current), or 3, 2 or 1 for older VectorCraft versions (1 and 2 are never compressed; newer features they don't know are lost there)",
+        description: "the format version to write: 4 (current), or 3, 2 or 1 for older VectorSmart versions (1 and 2 are never compressed; newer features they don't know are lost there)",
     },
     FormatOption {
         name: "preview",

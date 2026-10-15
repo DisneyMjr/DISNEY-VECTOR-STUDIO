@@ -49,3 +49,6 @@ artwork. Licence: see `LICENSE.txt`.
 Edit or replace `vectorcraft.svg` (and `vectorcraft-small.svg`), then run `packaging/icons.sh`
 (needs `resvg`; `iconutil` on macOS for the `.icns`). It writes every PNG, the `.ico` (via
 `cargo xtask ico`) and the `.icns`.
+
+
+Custom branding update: app icon replaced with the VectorSmart VS icon provided by the user on 2026-10-15.

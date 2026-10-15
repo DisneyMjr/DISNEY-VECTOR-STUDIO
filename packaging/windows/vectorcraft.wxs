@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  VectorCraft MSI (WiX Toolset v5: `dotnet tool install -g wix`, plus the UI and Util extensions:
+  VectorSmart MSI (WiX Toolset v5: `dotnet tool install -g wix`, plus the UI and Util extensions:
   `wix extension add -g WixToolset.UI.wixext/5.0.2 WixToolset.Util.wixext/5.0.2`). Built by package.ps1:
 
     wix build vectorcraft.wxs -arch x64 -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext
       -culture en-US -loc vectorcraft.en-us.wxl -d Version=1.2.3 -d DisplayVersion=1.2.3-rc.1
       -d BinDir=... -d IconPath=... -d BannerBmp=... -d DialogBmp=... -o out.msi
 
-  Per-machine install with a setup wizard that names the version: Welcome, install folder (Program Files\VectorCraft by
+  Per-machine install with a setup wizard that names the version: Welcome, install folder (Program Files\VectorSmart by
   default, remembered for upgrades), Ready, a progress page, and a Finish page with a ticked
-  "Launch VectorCraft" box. Installs a Start Menu shortcut and an App Paths entry (so `vectorcraft`
+  "Launch VectorSmart" box. Installs a Start Menu shortcut and an App Paths entry (so `vectorcraft`
   starts from the Run dialog), plus vectorcraft-cli. A Shortcuts page after the install folder offers
   a desktop shortcut (ticked). `msiexec /qn` still installs silently, with the desktop shortcut
   unless INSTALLDESKTOPSHORTCUT="" is passed.
@@ -17,38 +17,38 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
-      Name="Disney Vector Studio"
-      Manufacturer="Disney Vector Studio"
+      Name="VectorSmart"
+      Manufacturer="VectorSmart"
       Version="$(var.Version)"
       UpgradeCode="7F706B4D-3ED7-44AE-A123-70FC5CB65C64"
       Scope="perMachine"
       Compressed="yes"
       Language="1033">
-    <SummaryInformation Description="Disney Vector Studio editor vetorial" Manufacturer="Disney Vector Studio" />
+    <SummaryInformation Description="VectorSmart editor vetorial" Manufacturer="VectorSmart" />
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
     <MajorUpgrade AllowSameVersionUpgrades="yes"
-        DowngradeErrorMessage="A newer version of Disney Vector Studio is already installed." />
+        DowngradeErrorMessage="A newer version of VectorSmart is already installed." />
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <Icon Id="VectorcraftIcon.ico" SourceFile="$(var.IconPath)" />
     <Property Id="ARPPRODUCTICON" Value="VectorcraftIcon.ico" />
-    <Property Id="ARPURLINFOABOUT" Value="https://getartcraft.com/apps/vectorcraft" />
-    <Property Id="ARPURLUPDATEINFO" Value="https://getartcraft.com/apps/vectorcraft" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/DisneyMjr/DISNEY-VECTOR-STUDIO" />
+    <Property Id="ARPURLUPDATEINFO" Value="https://github.com/DisneyMjr/DISNEY-VECTOR-STUDIO" />
     <Property Id="ARPHELPLINK" Value="https://discord.gg/artcraft" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="INSTALLFOLDER" Name="Disney Vector Studio" />
+      <Directory Id="INSTALLFOLDER" Name="VectorSmart" />
     </StandardDirectory>
     <StandardDirectory Id="ProgramMenuFolder" />
     <StandardDirectory Id="DesktopFolder" />
 
     <!-- An upgrade installs where the user put the previous version (written by VectorcraftApp). -->
     <Property Id="INSTALLFOLDER">
-      <RegistrySearch Id="PreviousInstallFolder" Root="HKLM" Key="Software\DisneyVectorStudio" Name="InstallDir" Type="raw" />
+      <RegistrySearch Id="PreviousInstallFolder" Root="HKLM" Key="Software\VectorSmart" Name="InstallDir" Type="raw" />
     </Property>
 
-    <Feature Id="Main" Title="Disney Vector Studio" Level="1">
+    <Feature Id="Main" Title="VectorSmart" Level="1">
       <ComponentGroupRef Id="VectorcraftFiles" />
       <ComponentGroupRef Id="PdfDocumentation" />
       <ComponentRef Id="DesktopShortcut" />
@@ -100,8 +100,8 @@
     <Property Id="VectorcraftVersion" Value="$(var.DisplayVersion)" />
 
     <!-- Finish page: say where to find the app, and offer to start it (ticked by default). -->
-    <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="Disney Vector Studio $(var.DisplayVersion) is installed. You can start it any time from the Start menu." />
-    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Disney Vector Studio" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="VectorSmart $(var.DisplayVersion) is installed. You can start it any time from the Start menu." />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch VectorSmart" />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
     <Property Id="WixShellExecTarget" Value="[#VectorcraftExe]" />
     <!-- Runs in the wizard's own (unelevated) process, so the app starts as the user, not as admin. -->
@@ -114,18 +114,18 @@
     </ComponentGroup>
     <ComponentGroup Id="VectorcraftFiles" Directory="INSTALLFOLDER">
       <Component Id="VectorcraftApp" Guid="0E8C6C5E-DE4A-4E1D-9DB0-44E8E38C2103">
-        <File Id="VectorcraftExe" Source="$(var.BinDir)\vectorcraft.exe" KeyPath="yes">
-          <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="Disney Vector Studio"
-              Description="Disney Vector Studio editor vetorial" WorkingDirectory="INSTALLFOLDER" Advertise="yes"
+        <File Id="VectorcraftExe" Source="$(var.BinDir)\vectorsmart.exe" KeyPath="yes">
+          <Shortcut Id="StartMenuShortcut" Directory="ProgramMenuFolder" Name="VectorSmart"
+              Description="VectorSmart editor vetorial" WorkingDirectory="INSTALLFOLDER" Advertise="yes"
               Icon="VectorcraftIcon.ico" IconIndex="0" />
         </File>
 
-        <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\vectorcraft.exe" Value="[#VectorcraftExe]" Type="string" />
-        <RegistryValue Root="HKLM" Key="Software\DisneyVectorStudio" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" />
+        <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\vectorsmart.exe" Value="[#VectorcraftExe]" Type="string" />
+        <RegistryValue Root="HKLM" Key="Software\VectorSmart" Name="InstallDir" Value="[INSTALLFOLDER]" Type="string" />
       </Component>
 
       <Component Id="VectorcraftCli">
-        <File Id="VectorcraftCliExe" Source="$(var.BinDir)\vectorcraft-cli.exe" KeyPath="yes" />
+        <File Id="VectorcraftCliExe" Source="$(var.BinDir)\vectorsmart-cli.exe" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 
@@ -133,9 +133,9 @@
          app. A per-machine install puts it on the common desktop. `wix msi validate` reports ICE38,
          ICE43 and ICE57 for it: they take a desktop shortcut for per-user data, which it isn't here. -->
     <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="498F2D4C-E655-47F6-B406-2D4C449B8D26" Condition="INSTALLDESKTOPSHORTCUT">
-      <Shortcut Id="DesktopShortcut" Name="Disney Vector Studio" Description="Disney Vector Studio editor vetorial"
+      <Shortcut Id="DesktopShortcut" Name="VectorSmart" Description="VectorSmart editor vetorial"
           Target="[#VectorcraftExe]" WorkingDirectory="INSTALLFOLDER" Icon="VectorcraftIcon.ico" IconIndex="0" />
-      <RegistryValue Root="HKLM" Key="Software\DisneyVectorStudio" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+      <RegistryValue Root="HKLM" Key="Software\VectorSmart" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
     </Component>
   </Fragment>
 </Wix>

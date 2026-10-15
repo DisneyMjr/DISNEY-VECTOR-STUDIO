@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Build, sign and package VectorCraft for Windows.
+  Build, sign and package VectorSmart for Windows.
 
 .DESCRIPTION
   Produces, in $env:DIST (default: dist/release):
@@ -54,7 +54,7 @@ New-Item -ItemType Directory -Force -Path $Dist | Out-Null
 if (-not $env:VECTORCRAFT_BUILD_SHA) { $env:VECTORCRAFT_BUILD_SHA = (git -C $Root rev-parse HEAD 2>$null) }
 if (-not $env:VECTORCRAFT_BUILD_DATE) { $env:VECTORCRAFT_BUILD_DATE = (Get-Date).ToUniversalTime().ToString('yyyy-MM-dd') }
 
-Write-Output "VectorCraft $Version for Windows $Arch ($Target)"
+Write-Output "VectorSmart $Version for Windows $Arch ($Target)"
 
 if (-not $SkipBuild) {
   # Static CRT: no VC++ redistributable needed. Scoped to the target so host build scripts and
@@ -88,8 +88,11 @@ $Stage = Join-Path $TargetDir "windows-package\$Arch"
 Remove-Item -Recurse -Force $Stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Stage | Out-Null
 Copy-Item (Join-Path $Bin 'vectorcraft.exe'), (Join-Path $Bin 'vectorcraft-cli.exe') $Stage
+# Brand the shipped executables without changing internal Rust crate names.
+Rename-Item (Join-Path $Stage 'vectorcraft.exe') 'vectorsmart.exe'
+Rename-Item (Join-Path $Stage 'vectorcraft-cli.exe') 'vectorsmart-cli.exe'
 
-& (Join-Path $PSScriptRoot 'sign.ps1') (Join-Path $Stage 'vectorcraft.exe') (Join-Path $Stage 'vectorcraft-cli.exe')
+& (Join-Path $PSScriptRoot 'sign.ps1') (Join-Path $Stage 'vectorsmart.exe') (Join-Path $Stage 'vectorsmart-cli.exe')
 
 # Documentation and dependency licences shared by the MSI and portable ZIP.
 $Docs = Join-Path $Stage 'docs'
@@ -109,7 +112,7 @@ if (Test-Path (Join-Path $Root 'licenses')) {
 }
 
 # ---- MSI ---------------------------------------------------------------------------------------
-# The setup wizard's art, drawn here from the app icon so the MSI shows VectorCraft rather than
+# The setup wizard's art, drawn here from the app icon so the MSI shows VectorSmart rather than
 # WiX's stock bitmaps: a 493x58 banner across the top of the inner pages (the page title is drawn
 # over its left side, so that stays white) and a 493x312 backdrop for the Welcome and Finish pages
 # (their text sits on the right; the left 164 px are ours). Both must be 24-bit BMPs.
@@ -146,7 +149,7 @@ $Banner = Join-Path $Stage 'installer-banner.bmp'
 $Dialog = Join-Path $Stage 'installer-dialog.bmp'
 New-InstallerArt (Join-Path $Root 'assets\app-icon\hicolor\256x256\apps\ai.storyteller.vectorcraft.png') $Banner $Dialog
 
-$Msi = Join-Path $Dist "Disney-Vector-Studio-$Version-windows-$Arch.msi"
+$Msi = Join-Path $Dist "VectorSmart-$Version-windows-$Arch.msi"
 Invoke-Native 'wix build' {
   wix build (Join-Path $PSScriptRoot 'vectorcraft.wxs') -arch $Arch `
     -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext `
@@ -160,12 +163,12 @@ Remove-Item -Force -ErrorAction SilentlyContinue ([IO.Path]::ChangeExtension($Ms
 & (Join-Path $PSScriptRoot 'sign.ps1') $Msi
 
 # ---- portable zip ------------------------------------------------------------------------------
-$Portable = Join-Path $TargetDir "windows-package\vectorcraft-$Version-windows-$Arch-portable"
+$Portable = Join-Path $TargetDir "windows-package\vectorsmart-$Version-windows-$Arch-portable"
 Remove-Item -Recurse -Force $Portable -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Portable | Out-Null
 Copy-Item (Join-Path $Stage '*.exe') $Portable
 Copy-Item -Recurse (Join-Path $Docs '*') $Portable
-$Zip = Join-Path $Dist "Disney-Vector-Studio-$Version-windows-$Arch-portable.zip"
+$Zip = Join-Path $Dist "VectorSmart-$Version-windows-$Arch-portable.zip"
 Remove-Item -Force $Zip -ErrorAction SilentlyContinue
 Compress-Archive -Path $Portable -DestinationPath $Zip
 
@@ -173,7 +176,7 @@ Compress-Archive -Path $Portable -DestinationPath $Zip
 # here; .github/workflows/windows-arm64.yml installs and runs it on ARM64 instead.
 $HostArch = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant()
 if ($Arch -ne 'arm64' -or $HostArch -eq 'arm64') {
-  Invoke-Native 'vectorcraft-cli --version' { & (Join-Path $Stage 'vectorcraft-cli.exe') --version }
+  Invoke-Native 'vectorcraft-cli --version' { & (Join-Path $Stage 'vectorsmart-cli.exe') --version }
 } else {
   Write-Output "skipping vectorcraft-cli --version: an $Arch build doesn't run on this $HostArch machine"
 }

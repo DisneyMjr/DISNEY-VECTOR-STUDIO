@@ -1,4 +1,4 @@
-name: Gerar MSI Disney Vector Studio
+name: Gerar MSI VectorSmart
 on:
   workflow_dispatch:
 permissions:
@@ -27,7 +27,7 @@ jobs:
       - name: Publicar instalador MSI
         uses: actions/upload-artifact@v4
         with:
-          name: Disney-Vector-Studio-Windows-MSI
+          name: VectorSmart-Windows-MSI
           path: dist/release/*.msi
           if-no-files-found: error
           retention-days: 30

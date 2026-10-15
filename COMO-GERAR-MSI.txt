@@ -1,0 +1,12 @@
+VECTORSMART - INSTALADOR WINDOWS MSI
+
+1. Envie todos os arquivos deste ZIP para o repositório do GitHub.
+2. No GitHub abra Actions > Gerar MSI VectorSmart > Run workflow.
+3. Ao concluir com sucesso, baixe o Artifacts: VectorSmart-Windows-MSI.
+4. Distribua o arquivo VectorSmart-0.11.0-windows-x64.msi para instalar com dois cliques.
+
+IMPORTANTE: o Rust compila internamente os pacotes vectorcraft por compatibilidade.
+O MSI e os executáveis instalados levam o nome VectorSmart.
+Os arquivos .vectorcraft continuam compatíveis.
+O build ainda precisa ser validado em Windows.
+O código original mantém seus avisos de licença e atribuição.

@@ -3,7 +3,7 @@
 //! A `.vectorcraft` file is UTF-8 JSON, gzip-compressed when saved with Use Compression (told apart
 //! by its magic bytes on open, whatever the version):
 //! ```json
-//! { "format": "vectorcraft", "version": 3, "generator": "VectorCraft 0.1.0",
+//! { "format": "vectorcraft", "version": 3, "generator": "VectorSmart 0.1.0",
 //!   "preview": { "mime": "image/png", "data": "<base64>" },
 //!   "profiles": { "<profile name>": { "mime": "application/vnd.iccprofile", "data": "<base64>" } },
 //!   "pdf": { "mime": "application/pdf", "data": "<base64>" },
@@ -88,17 +88,17 @@ pub fn is_native_name(name: &str) -> bool {
 
 #[derive(Debug, thiserror::Error)]
 pub enum FormatError {
-    #[error("not a VectorCraft file: {0}")]
+    #[error("not a VectorSmart file: {0}")]
     NotVectorcraft(String),
-    #[error("file version {0} is newer than this VectorCraft supports ({VERSION})")]
+    #[error("file version {0} is newer than this VectorSmart supports ({VERSION})")]
     TooNew(u32),
     #[error("invalid image data for `{0}`")]
     BadImage(String),
-    #[error("can't save version {0}: VectorCraft writes versions {MIN_VERSION} to {VERSION}")]
+    #[error("can't save version {0}: VectorSmart writes versions {MIN_VERSION} to {VERSION}")]
     BadVersion(u32),
     #[error("version {0} files can't be compressed: only version {COMPRESSED_SINCE} and later open compressed files")]
     CompressedTooOld(u32),
-    #[error("the compressed file unpacks to more than VectorCraft reads ({} MB of document, {} MB per image)", MAX_JSON >> 20, MAX_BLOB >> 20)]
+    #[error("the compressed file unpacks to more than VectorSmart reads ({} MB of document, {} MB per image)", MAX_JSON >> 20, MAX_BLOB >> 20)]
     TooBig,
     #[error("the document is too large to save compressed ({0}): save it with Use Compression off")]
     TooBigToCompress(String),

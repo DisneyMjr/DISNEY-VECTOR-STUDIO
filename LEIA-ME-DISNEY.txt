@@ -1,0 +1,21 @@
+DISNEY VECTOR STUDIO - FONTE PERSONALIZADO
+
+Este ZIP contem o codigo Rust personalizado e a receita para produzir MSI Windows x64.
+NAO contem um instalador compilado nem executavel testado.
+
+COMO GERAR MSI SEM CONFIGURAR RUST NO SEU COMPUTADOR:
+1. Crie um repositorio PRIVADO ou publico no GitHub.
+2. Envie para o repositorio o CONTEUDO da pasta vectorcraft-main (na raiz).
+3. Entre na aba Actions, selecione "Gerar MSI Disney Vector Studio".
+4. Clique em "Run workflow".
+5. Quando terminar com sucesso, abra a execucao e baixe o artefato
+   "Disney-Vector-Studio-Windows-MSI". Ele contem o arquivo .msi.
+6. Passe apenas o MSI aos usuarios finais. Eles nao compilam nada.
+
+A compilacao na nuvem pode falhar por dependencias ou mudanças no ambiente.
+O fluxo nao foi executado aqui. O MSI nao foi assinado digitalmente.
+Windows pode exibir aviso de editor desconhecido; assinar exige certificado valido.
+
+O instalador conserva os nomes internos dos executaveis originais para nao quebrar
+a build, mas mostra Disney Vector Studio no assistente de instalacao.
+O codigo original e creditos/licencas foram preservados.

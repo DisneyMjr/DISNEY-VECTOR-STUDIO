@@ -9,6 +9,8 @@ pub const INSTAGRAM_URL: &str = "https://instagram.com/disneymkt";
 pub fn specs() -> Vec<CommandSpec> {
     vec![
         cmd!(query "help.discord", "Me siga no Insta", ["Help"], None, "{} → {url} Instagram do Disney", always, |_, _| url(INSTAGRAM_URL.into())),
+        cmd!(query "help.update", "Verificar atualizações", ["Help"], None, "{} → {url} pagina de downloads", always, |_, _| url("https://github.com/DisneyMjr/DISNEY-VECTOR-STUDIO/releases/latest".into())),
+        cmd!(query "help.update", "Verificar atualizações", ["Help"], None, "{} → {url} pagina de downloads", always, |_, _| url("https://github.com/DisneyMjr/DISNEY-VECTOR-STUDIO/releases/latest".into())),
         cmd!(query "help.links", "Links", [], None, "{} → {instagram}", always, |_, _| {
             Ok(json!({ "instagram": INSTAGRAM_URL }))
         }),

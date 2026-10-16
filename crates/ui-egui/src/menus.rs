@@ -2707,6 +2707,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
             "Help",
             vec![
                 c("Me siga no Insta", "help.discord"),
+                c("Verificar atualizações", "help.update"),
                 Sep,
                 c("Search Commands…", "help.commandPalette"),
                 todos("VectorSmart Help…", "F1"),
@@ -3265,7 +3266,7 @@ pub fn invoke(app: &mut VectorcraftApp, id: &str, p: Value) {
         return;
     }
     // Help links: the command returns the URL; a menu click opens it (agents just get the URL).
-    if matches!(id, "help.discord") {
+    if matches!(id, "help.discord" | "help.update") {
         app.open_link(id);
         return;
     }

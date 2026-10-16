@@ -1,0 +1,70 @@
+name: Gerar Linux VectorSmart
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: AppImage, DEB, RPM e TAR.GZ (x64)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 150
+    env:
+      NFPM_VERSION: '2.47.0'
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Baixar fontes licenciadas do projeto
+        uses: actions/checkout@v4
+        with:
+          repository: storytold/craft-fonts
+          ref: 3d9ab3a132ed0eff457e424226a435a901da30d3
+          path: craft-fonts
+
+      - name: Instalar dependencias Linux
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            curl ca-certificates pkg-config build-essential cmake clang libssl-dev \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev \
+            libgl1-mesa-dev desktop-file-utils appstream python3-yaml zsync
+          curl -fsSL -o "$RUNNER_TEMP/nfpm.deb" \
+            "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb"
+          sudo dpkg -i "$RUNNER_TEMP/nfpm.deb"
+
+      - name: Preparar Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache do Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: smart-linux-x64
+
+      - name: Compilar e empacotar
+        shell: bash
+        env:
+          CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
+          CRAFT_FONTS_REQUIRED: '1'
+        run: bash packaging/linux/package.sh
+
+      - name: Conferir arquivos gerados
+        shell: bash
+        run: |
+          ls -lh dist/release/
+          test -n "$(find dist/release -maxdepth 1 -name '*.AppImage' -print -quit)"
+          test -n "$(find dist/release -maxdepth 1 -name '*.deb' -print -quit)"
+          test -n "$(find dist/release -maxdepth 1 -name '*.rpm' -print -quit)"
+          test -n "$(find dist/release -maxdepth 1 -name '*.tar.gz' -print -quit)"
+          sha256sum dist/release/* > dist/release/SHA256SUMS.txt
+
+      - name: Disponibilizar instaladores
+        uses: actions/upload-artifact@v4
+        with:
+          name: VectorSmart-Linux-x64
+          path: dist/release/*
+          if-no-files-found: error
+          retention-days: 30

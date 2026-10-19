@@ -79,6 +79,7 @@ mod save_pdf;
 pub mod save_style_library;
 pub mod save_swatch_library;
 pub mod script_check;
+pub mod jsx_run;
 mod shapes;
 pub mod shortcut_import;
 pub mod slices;
@@ -289,6 +290,7 @@ registry! {
     PrintPresets: [print_presets::KIND] => print_presets::SPEC,
     Plugin: [plugin::KIND] => plugin::SPEC,
     ScriptCheck: [script_check::KIND] => script_check::SPEC,
+    JsxRun: [jsx_run::KIND] => jsx_run::SPEC,
     VectorHalftone: [halftone::KIND] => halftone::SPEC,
     PerspectiveGrid: [perspective_grid::KIND] => perspective_grid::SPEC,
     Envelope: [envelope::WARP, envelope::MESH, envelope::OPTIONS] => envelope::SPEC,

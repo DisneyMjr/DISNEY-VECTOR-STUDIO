@@ -80,6 +80,7 @@ pub mod save_style_library;
 pub mod save_swatch_library;
 pub mod script_check;
 pub mod jsx_run;
+pub mod smart_social;
 mod shapes;
 pub mod shortcut_import;
 pub mod slices;
@@ -291,6 +292,7 @@ registry! {
     Plugin: [plugin::KIND] => plugin::SPEC,
     ScriptCheck: [script_check::KIND] => script_check::SPEC,
     JsxRun: [jsx_run::KIND] => jsx_run::SPEC,
+    SmartSocial: [smart_social::KIND] => smart_social::SPEC,
     VectorHalftone: [halftone::KIND] => halftone::SPEC,
     PerspectiveGrid: [perspective_grid::KIND] => perspective_grid::SPEC,
     Envelope: [envelope::WARP, envelope::MESH, envelope::OPTIONS] => envelope::SPEC,

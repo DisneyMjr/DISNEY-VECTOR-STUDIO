@@ -12,6 +12,11 @@ if (!input || !input.toLowerCase().endsWith('.jsx')) { console.error('Uso: node 
 const qrData = arg('--data', '');
 const size = Number(arg('--size', '2'));
 const output = arg('--out', path.basename(input,'.jsx')+'.svg');
+const foreground=arg('--foreground','#000000');
+const background=arg('--background','#FFFFFF');
+const margin=Number(arg('--margin','4'));
+const validHex=/^#[0-9a-fA-F]{6}$/;
+if (!validHex.test(foreground)||!validHex.test(background)||!Number.isInteger(margin)||margin<0||margin>16) {console.error('Cores ou margem inválidas');process.exit(2);} 
 if (!qrData || !(size>0 && size<=50)) { console.error('Informe --data e --size (em polegadas, entre 0 e 50).'); process.exit(2); }
 const source=fs.readFileSync(input,'utf8');
 if (source.length > 4_000_000) throw Error('Script muito grande');
@@ -41,6 +46,10 @@ const paths=doc.paths.map(p=>{
   const gray=Math.round(Math.max(0,Math.min(100,g))*255/100).toString(16).padStart(2,'0');
   return `<path d="${escape(d)}" fill="#${gray}${gray}${gray}" stroke="none"/>`;
 });
-const svg=`<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${doc.width}pt" height="${doc.height}pt" viewBox="0 0 ${doc.width} ${doc.height}">\n${paths.join('\n')}\n</svg>\n`;
+const moduleWidth=doc.width/((sandbox.qr && sandbox.qr.modules && sandbox.qr.modules.length)||33);
+const pad=margin*moduleWidth;
+const totalW=doc.width+2*pad,totalH=doc.height+2*pad;
+const colored=paths.join('\n').replace(/fill="#000000"/gi,`fill="${foreground}"`).replace(/fill="#ffffff"/gi,`fill="${background}"`);
+const svg=`<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}pt" height="${totalH}pt" viewBox="0 0 ${totalW} ${totalH}">\n<rect width="${totalW}" height="${totalH}" fill="${background}"/>\n<g transform="translate(${pad},${pad})">${colored}</g>\n</svg>\n`;
 fs.writeFileSync(output,svg,'utf8');
 console.log(`VectorSmart JSX (experimental): ${paths.length} vetores salvos em ${output}`);

@@ -782,6 +782,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "{path?: a .wasm file} install a WebAssembly plug-in (plugin.install); without a path pick one (the web opens the browser's file picker; File › Open of a .wasm installs it too)",
     ),
     (
+        "ui.smartQrPro",
+        "Smart QR Pro…",
+        "",
+        "{} Gerar QR Code vetorial com cores e margem de segurança.",
+    ),
+    (
         "ui.executeJsx",
         "Executar JSX (experimental)…",
         "",
@@ -1476,6 +1482,7 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         "ui.installPlugin" => io::install_plugin(app, s("path")),
         "ui.checkScript" => crate::dialogs::script_check::command(app, p),
         "ui.executeJsx" => crate::dialogs::jsx_run::command(app, p),
+        "ui.smartQrPro" => crate::dialogs::jsx_run::qr_command(app),
         "ui.perspectiveGridDialog" => crate::dialogs::perspective_grid::open(app),
         "ui.perspectivePresetsDialog" => {
             crate::dialogs::perspective_presets::open(app, s("selected").as_deref());
@@ -2127,7 +2134,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 c("Export Selection…", "file.exportSelection"),
                 Sep,
                 c("Package…", "ui.packageDialog"),
-                sub("Scripts", vec![c("Check Script…", "ui.checkScript"), c("Executar JSX (experimental)…", "ui.executeJsx")]),
+                sub("Scripts", vec![c("Smart QR Pro…", "ui.smartQrPro"), c("Check Script…", "ui.checkScript"), c("Executar JSX (experimental)…", "ui.executeJsx")]),
                 Sep,
                 c("Document Setup…", "file.documentSetup"),
                 sub(

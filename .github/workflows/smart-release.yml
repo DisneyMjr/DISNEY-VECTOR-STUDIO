@@ -30,15 +30,16 @@ jobs:
         run: |
           [[ "$APP_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo 'Use x.y.z'; exit 1; }
           echo "tag=v${APP_VERSION}" >> "$GITHUB_OUTPUT"
-      - name: Confirmar que a versão não existe
+      - name: Verificar se a Release já existe
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         shell: bash
         run: |
           if gh release view "${{ steps.check.outputs.tag }}" >/dev/null 2>&1; then
-            echo 'Essa versão já foi publicada. Escolha uma nova versão.'
-            exit 1
+            echo 'Release existente: os anexos com nomes iguais serão substituídos.'
+          else
+            echo 'Nova Release: será criada após a compilação.'
           fi
   windows:
     needs: validar
@@ -217,4 +218,9 @@ jobs:
         run: |
           mapfile -d '' FILES < <(find instaladores -type f \( -name '*.msi' -o -name '*.AppImage' -o -name '*.deb' -o -name '*.rpm' -o -name '*.tar.gz' -o -name '*.dmg' -o -name '*.zip' \) -print0)
           test "${#FILES[@]}" -gt 0
-          gh release create "$TAG" "${FILES[@]}" --target "$GITHUB_SHA" --title "VectorSmart $TAG" --notes "Instaladores Windows x64, Linux x64 e macOS universal (Intel/Apple Silicon). iOS ainda em desenvolvimento. No macOS, o aplicativo pode exigir autorização manual de abertura enquanto não houver assinatura/notarização."
+          # Primeiro, criar a Release sem anexos, caso ainda não exista.
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "VectorSmart $TAG" --notes "Instaladores Windows x64, Linux x64 e macOS universal (Intel/Apple Silicon). iOS ainda em desenvolvimento. No macOS, o aplicativo pode exigir autorização manual de abertura enquanto não houver assinatura/notarização."
+          fi
+          # Permitir nova execução com o mesmo TAG e substituir nomes duplicados.
+          gh release upload "$TAG" "${FILES[@]}" --clobber

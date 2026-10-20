@@ -782,6 +782,12 @@ pub const UI_COMMANDS: &[(&str, &str, &str, &str)] = &[
         "{path?: a .wasm file} install a WebAssembly plug-in (plugin.install); without a path pick one (the web opens the browser's file picker; File › Open of a .wasm installs it too)",
     ),
     (
+        "ui.canvaBridge",
+        "Canva Bridge · Exportar para Canva…",
+        "",
+        "Abre um fluxo assistido de exportação PDF e importação no Canva; ainda não autentica a conta Canva.",
+    ),
+    (
         "ui.smartAi",
         "Smart AI · Estúdio Vetorial…",
         "",
@@ -1497,6 +1503,7 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
         "ui.smartQrPro" => crate::dialogs::jsx_run::qr_command(app),
         "ui.smartSocial" => crate::dialogs::smart_social::command(app, p),
         "ui.smartAi" => crate::dialogs::smart_ai::command(app, p),
+        "ui.canvaBridge" => crate::dialogs::canva_bridge::command(app, p),
         "ui.perspectiveGridDialog" => crate::dialogs::perspective_grid::open(app),
         "ui.perspectivePresetsDialog" => {
             crate::dialogs::perspective_presets::open(app, s("selected").as_deref());
@@ -2148,7 +2155,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 c("Export Selection…", "file.exportSelection"),
                 Sep,
                 c("Package…", "ui.packageDialog"),
-                sub("Scripts", vec![c("Smart AI · Estúdio Vetorial…", "ui.smartAi"), c("Smart Social · Artes em lote…", "ui.smartSocial"), c("Smart QR Pro…", "ui.smartQrPro"), c("Check Script…", "ui.checkScript"), c("Executar JSX (experimental)…", "ui.executeJsx")]),
+                sub("Scripts", vec![c("Canva Bridge · Exportar para Canva…", "ui.canvaBridge"), c("Smart AI · Estúdio Vetorial…", "ui.smartAi"), c("Smart Social · Artes em lote…", "ui.smartSocial"), c("Smart QR Pro…", "ui.smartQrPro"), c("Check Script…", "ui.checkScript"), c("Executar JSX (experimental)…", "ui.executeJsx")]),
                 Sep,
                 c("Document Setup…", "file.documentSetup"),
                 sub(

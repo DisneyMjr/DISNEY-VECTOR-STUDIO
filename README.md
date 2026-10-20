@@ -1,3 +1,5 @@
+> Canva Bridge (beta): novo fluxo de exportação PDF para importação no Canva. Veja [CANVA-BRIDGE.md](CANVA-BRIDGE.md). Não oferece OAuth/sincronização automática nesta etapa.
+
 > **Versão 1.1:** Smart AI · Estúdio Vetorial (Beta local). Consulte [SMART-AI.md](SMART-AI.md) para recursos e limitações.
 
 <p align="center">
@@ -362,3 +364,8 @@ Forks and modified versions must remove them.
   <a href="https://getartcraft.com/"><img alt="ArtCraft" src="docs/brand/artcraft-mark.svg" width="28"></a><br>
   <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
 </p>
+
+
+## Distribuicao multiplataforma
+
+Veja [MULTIPLATAFORMA.md](MULTIPLATAFORMA.md). O workflow macOS universal foi adicionado. iOS/iPadOS inclui apenas um prototipo de editor nativo SwiftUI, **nao o editor Rust completo**.

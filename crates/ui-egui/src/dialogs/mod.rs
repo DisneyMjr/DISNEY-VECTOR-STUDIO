@@ -82,6 +82,7 @@ pub mod script_check;
 pub mod jsx_run;
 pub mod smart_social;
 pub mod smart_ai;
+pub mod canva_bridge;
 mod shapes;
 pub mod shortcut_import;
 pub mod slices;
@@ -295,6 +296,7 @@ registry! {
     JsxRun: [jsx_run::KIND] => jsx_run::SPEC,
     SmartSocial: [smart_social::KIND] => smart_social::SPEC,
     SmartAi: [smart_ai::KIND] => smart_ai::SPEC,
+    CanvaBridge: [canva_bridge::KIND] => canva_bridge::SPEC,
     VectorHalftone: [halftone::KIND] => halftone::SPEC,
     PerspectiveGrid: [perspective_grid::KIND] => perspective_grid::SPEC,
     Envelope: [envelope::WARP, envelope::MESH, envelope::OPTIONS] => envelope::SPEC,

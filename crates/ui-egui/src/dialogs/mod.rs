@@ -81,6 +81,7 @@ pub mod save_swatch_library;
 pub mod script_check;
 pub mod jsx_run;
 pub mod smart_social;
+pub mod smart_ai;
 mod shapes;
 pub mod shortcut_import;
 pub mod slices;
@@ -293,6 +294,7 @@ registry! {
     ScriptCheck: [script_check::KIND] => script_check::SPEC,
     JsxRun: [jsx_run::KIND] => jsx_run::SPEC,
     SmartSocial: [smart_social::KIND] => smart_social::SPEC,
+    SmartAi: [smart_ai::KIND] => smart_ai::SPEC,
     VectorHalftone: [halftone::KIND] => halftone::SPEC,
     PerspectiveGrid: [perspective_grid::KIND] => perspective_grid::SPEC,
     Envelope: [envelope::WARP, envelope::MESH, envelope::OPTIONS] => envelope::SPEC,

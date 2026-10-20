@@ -1,3 +1,5 @@
+> **Versão 1.1:** Smart AI · Estúdio Vetorial (Beta local). Consulte [SMART-AI.md](SMART-AI.md) para recursos e limitações.
+
 <p align="center">
   <a href="https://getartcraft.com/">
     <picture>

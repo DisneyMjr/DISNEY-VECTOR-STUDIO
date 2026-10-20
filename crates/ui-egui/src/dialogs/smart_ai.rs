@@ -102,26 +102,26 @@ fn render_svg(w:u32,h:u32,prompt:&str,title:&str,subtitle:&str,style:&str,palett
     match style {
         "Minimalista" => {
             s.push_str(&format!("<rect id=\"barra-destaque\" x=\"80\" y=\"100\" width=\"260\" height=\"16\" rx=\"8\" fill=\"{accent}\"/>\n"));
-            s.push_str(&format!("<circle id=\"elemento-circular\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"none\" stroke=\"{secondary}\" stroke-width=\"14\"/>\n",wf*.78,hf*.28,wf*.15));
+            s.push_str(&format!("<circle id=\"elemento-circular\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"none\" stroke=\"{secondary}\" stroke-width=\"14\"/>\n",wf*0.78,hf*0.28,wf*0.15));
         },
         "Gradiente" => {
             s.push_str(&format!("<defs><linearGradient id=\"smart-grad\" x1=\"0\" x2=\"1\" y1=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"{accent}\"/><stop offset=\"1\" stop-color=\"{secondary}\"/></linearGradient></defs>\n"));
-            s.push_str(&format!("<circle id=\"circulo-gradiente\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"url(#smart-grad)\"/>\n",wf*.8,hf*.27,wf*.27));
+            s.push_str(&format!("<circle id=\"circulo-gradiente\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"url(#smart-grad)\"/>\n",wf*0.8,hf*0.27,wf*0.27));
         },
         "Selo vetorial" => {
-            s.push_str(&format!("<circle id=\"selo-externo\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"{accent}\" stroke=\"{secondary}\" stroke-width=\"14\"/>\n",wf*.5,hf*.35,wf*.28));
-            s.push_str(&format!("<circle id=\"selo-interno\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"none\" stroke=\"{fg}\" stroke-width=\"7\"/>\n",wf*.5,hf*.35,wf*.235));
+            s.push_str(&format!("<circle id=\"selo-externo\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"{accent}\" stroke=\"{secondary}\" stroke-width=\"14\"/>\n",wf*0.5,hf*0.35,wf*0.28));
+            s.push_str(&format!("<circle id=\"selo-interno\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"none\" stroke=\"{fg}\" stroke-width=\"7\"/>\n",wf*0.5,hf*0.35,wf*0.235));
         },
         _ => {
-            s.push_str(&format!("<circle id=\"circulo\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"{accent}\"/>\n",wf*.83,hf*.27,wf*.28));
-            s.push_str(&format!("<rect id=\"quadrado\" x=\"{:.0}\" y=\"{:.0}\" width=\"{:.0}\" height=\"{:.0}\" rx=\"36\" transform=\"rotate(-22 {:.0} {:.0})\" fill=\"{secondary}\" opacity=\"0.8\"/>\n",wf*.53,hf*.14,wf*.19,wf*.19,wf*.63,hf*.24));
+            s.push_str(&format!("<circle id=\"circulo\" cx=\"{:.0}\" cy=\"{:.0}\" r=\"{:.0}\" fill=\"{accent}\"/>\n",wf*0.83,hf*0.27,wf*0.28));
+            s.push_str(&format!("<rect id=\"quadrado\" x=\"{:.0}\" y=\"{:.0}\" width=\"{:.0}\" height=\"{:.0}\" rx=\"36\" transform=\"rotate(-22 {:.0} {:.0})\" fill=\"{secondary}\" opacity=\"0.8\"/>\n",wf*0.53,hf*0.14,wf*0.19,wf*0.19,wf*0.63,hf*0.24));
         },
     }
-    let title_y=if style=="Selo vetorial"{hf*.69}else{hf*.55};
+    let title_y=if style=="Selo vetorial"{hf*0.69}else{hf*0.55};
     let title_size=if w==1024{69}else{79};
-    for (i,line) in wrap(title,18,4).iter().enumerate(){s.push_str(&format!("<text id=\"titulo-{i}\" x=\"80\" y=\"{:.0}\" fill=\"{fg}\" font-family=\"Arial,sans-serif\" font-weight=\"700\" font-size=\"{title_size}\">{}</text>\n",title_y+(i as f64*91.),esc(line)));}
-    let sub_y=(hf*.86).min(hf-92.);
-    for (i,line) in wrap(subtitle,38,2).iter().enumerate(){s.push_str(&format!("<text id=\"subtitulo-{i}\" x=\"80\" y=\"{:.0}\" fill=\"{fg}\" font-family=\"Arial,sans-serif\" font-size=\"34\">{}</text>\n",sub_y+(i as f64*44.),esc(line)));}
+    for (i,line) in wrap(title,18,4).iter().enumerate(){s.push_str(&format!("<text id=\"titulo-{i}\" x=\"80\" y=\"{:.0}\" fill=\"{fg}\" font-family=\"Arial,sans-serif\" font-weight=\"700\" font-size=\"{title_size}\">{}</text>\n",title_y+(i as f64*91.0),esc(line)));}
+    let sub_y=(hf*0.86).min(hf-92.0);
+    for (i,line) in wrap(subtitle,38,2).iter().enumerate(){s.push_str(&format!("<text id=\"subtitulo-{i}\" x=\"80\" y=\"{:.0}\" fill=\"{fg}\" font-family=\"Arial,sans-serif\" font-size=\"34\">{}</text>\n",sub_y+(i as f64*44.0),esc(line)));}
     s.push_str("</svg>");s
 }
 

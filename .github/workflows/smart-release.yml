@@ -177,7 +177,7 @@ jobs:
         run: |
           ls -lah dist/release
           test -n "$(find dist/release -maxdepth 1 -name '*-macos-universal.dmg' -print -quit)"
-          (cd dist/release && shasum -a 256 *.dmg *.zip > SHA256SUMS-macos.txt)
+          (cd dist/release && shasum -a 256 ./*.dmg ./*.zip > SHA256SUMS-macos.txt)
       - name: Disponibilizar instaladores macOS
         uses: actions/upload-artifact@v4
         with:

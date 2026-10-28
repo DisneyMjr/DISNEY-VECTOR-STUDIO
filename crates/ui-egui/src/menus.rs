@@ -1007,17 +1007,26 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
             Ok(Value::Null)
         }
         "ui.importCadCdr" => {
-            let path = crate::picks::open(app, &crate::FilePick { filters: vec![("AutoCAD / CorelDRAW", &["dwg", "cdr"])], ..Default::default() }).ok_or("Importação cancelada")?;
-            io::open_path(app, &path)
+            match crate::picks::open(app, &crate::FilePick {
+                filters: vec![("AutoCAD / CorelDRAW", &["dwg", "cdr"])],
+                ..Default::default()
+            }) {
+                Some(path) => io::open_path(app, &path),
+                None => Err("Importação cancelada".to_string()),
+            }
         }
         "ui.selectionDimensions" => {
-            let bounds = app.selection_bounds().ok_or("Selecione um objeto para consultar suas cotas")?;
-            // The document geometry is measured internally in points (72 pt per inch).
-            let mm_w = bounds.width() * 25.4 / 72.0;
-            let mm_h = bounds.height() * 25.4 / 72.0;
-            let detail = format!("Largura: {mm_w:.2} mm\nAltura: {mm_h:.2} mm\n\nValores calculados pelo retângulo envolvente da seleção. Para cotagem CAD precisa, confira a escala original.");
-            crate::dialogs::confirm::tell(app, "Cotas da seleção", &detail);
-            Ok(json!({"widthMm":mm_w,"heightMm":mm_h}))
+            match app.selection_bounds() {
+                Some(bounds) => {
+                    // The document geometry is measured internally in points (72 pt per inch).
+                    let mm_w = bounds.width() * 25.4 / 72.0;
+                    let mm_h = bounds.height() * 25.4 / 72.0;
+                    let detail = format!("Largura: {mm_w:.2} mm\nAltura: {mm_h:.2} mm\n\nValores calculados pelo retângulo envolvente da seleção. Para cotagem CAD precisa, confira a escala original.");
+                    crate::dialogs::confirm::tell(app, "Cotas da seleção", &detail);
+                    Ok(json!({"widthMm":mm_w,"heightMm":mm_h}))
+                }
+                None => Err("Selecione um objeto para consultar suas cotas".to_string()),
+            }
         }
         "file.open" => match s("path") {
             Some(path) => io::open_path(app, &path),

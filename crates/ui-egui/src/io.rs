@@ -163,7 +163,7 @@ pub fn open_dialog(app: &mut VectorcraftApp) -> Result<(), String> {
         f();
         return Ok(());
     }
-    let path = pick_open(app, &FilePick { filters: fileio::open_filters().collect(), ..Default::default() })?;
+    let path = pick_open(app, &FilePick { filters: std::iter::once(("CAD / CorelDRAW (conversão)", &["dwg", "cdr"][..])).chain(fileio::open_filters()).collect(), ..Default::default() })?;
     open_reporting(app, &path).map(|_| ())
 }
 
@@ -234,6 +234,11 @@ pub(crate) fn open_file(app: &mut VectorcraftApp, path: &str, background: bool) 
         note_recent(app, path);
         return Ok(Value::Null);
     }
+    // CAD and CorelDRAW are imported through optional desktop conversion tools.
+    // The converted SVG becomes a regular editable document; original files are never overwritten.
+    if matches!(std::path::Path::new(path).extension().and_then(|e| e.to_str()).map(str::to_ascii_lowercase).as_deref(), Some("dwg" | "cdr")) {
+        return open_cad_or_cdr(app, path);
+    }
     let mut bytes = read(app, path)?;
     if background && opens_as(path).is_none() {
         // A PDF with several pages or a password, or a DXF drawing, asks first, as at once.
@@ -252,6 +257,52 @@ pub(crate) fn open_file(app: &mut VectorcraftApp, path: &str, background: bool) 
     let r = open_bytes(app, path, &bytes, Some(path.to_string()))?;
     note_recent(app, path);
     Ok(r)
+}
+
+
+/// Import a DWG or CDR through installed open-source conversion tools.
+/// Not a native parser: fidelity varies by file and external converter version.
+#[cfg(not(target_arch = "wasm32"))]
+fn open_cad_or_cdr(app: &mut VectorcraftApp, path: &str) -> Result<Value, String> {
+    use std::{fs, process::Command, time::{SystemTime, UNIX_EPOCH}};
+    let extension = std::path::Path::new(path).extension().and_then(|s| s.to_str()).unwrap_or("").to_ascii_lowercase();
+    let input = fs::canonicalize(path).map_err(|e| format!("Arquivo não encontrado: {e}"))?;
+    let stamp = SystemTime::now().duration_since(UNIX_EPOCH).map_err(|e| e.to_string())?.as_nanos();
+    let temp = std::env::temp_dir().join(format!("vectorsmart-cad-{stamp}"));
+    fs::create_dir_all(&temp).map_err(|e| e.to_string())?;
+    let svg = match extension.as_str() {
+        "dwg" => {
+            let output = Command::new("dwg2SVG").arg(&input).output()
+                .map_err(|e| format!("Instale o LibreDWG (dwg2SVG) para importar DWG: {e}"))?;
+            if !output.status.success() {
+                return Err(format!("Falha ao converter DWG: {}", String::from_utf8_lossy(&output.stderr)));
+            }
+            output.stdout
+        }
+        "cdr" => {
+            // LibreOffice Draw uses libcdr for supported CDR versions.
+            let status = Command::new("libreoffice").arg("-env:UserInstallation=file:///tmp/vectorsmart-cdr-conversion")
+                .args(["--headless", "--convert-to", "svg", "--outdir"]).arg(&temp).arg(&input).status()
+                .map_err(|e| format!("Instale LibreOffice Draw/libcdr para importar CDR: {e}"))?;
+            if !status.success() { return Err("Não foi possível converter este CDR. Tente exportá-lo como SVG no CorelDRAW.".into()); }
+            let generated = temp.join(format!("{}.svg", input.file_stem().and_then(|s| s.to_str()).unwrap_or("importado")));
+            fs::read(&generated).map_err(|e| format!("CDR não convertido em SVG: {e}"))?
+        }
+        _ => return Err("Extensão não suportada".into()),
+    };
+    if !svg.windows(4).any(|b| b == b"<svg") {
+        return Err("O conversor não retornou um documento SVG válido".into());
+    }
+    // Do not rewrite the user's original DWG/CDR file; open the derived SVG as an untitled document.
+    let result = open_document(app, &format!("{} (importado).svg", std::path::Path::new(path).file_stem().and_then(|s| s.to_str()).unwrap_or("importado")), &svg, None, &Value::Null)?;
+    app.status("Arquivo convertido para SVG editável. Confira escala, fontes, camadas e geometria antes de usar em produção.");
+    let _ = fs::remove_dir_all(&temp);
+    Ok(result)
+}
+
+#[cfg(target_arch = "wasm32")]
+fn open_cad_or_cdr(_app: &mut VectorcraftApp, _path: &str) -> Result<Value, String> {
+    Err("DWG e CDR exigem conversão na versão desktop".into())
 }
 
 /// File → New from Template…: a template (or any readable file) as a new untitled document. Without

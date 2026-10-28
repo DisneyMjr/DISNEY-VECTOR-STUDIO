@@ -1006,6 +1006,19 @@ pub fn run_ui_command(app: &mut VectorcraftApp, id: &str, p: &Value) -> Option<R
             app.ui.home = Some(home_key(app));
             Ok(Value::Null)
         }
+        "ui.importCadCdr" => {
+            let path = crate::picks::open(app, &crate::FilePick { filters: vec![("AutoCAD / CorelDRAW", &["dwg", "cdr"])], ..Default::default() }).ok_or("Importação cancelada")?;
+            io::open_path(app, &path)
+        }
+        "ui.selectionDimensions" => {
+            let bounds = app.selection_bounds().ok_or("Selecione um objeto para consultar suas cotas")?;
+            // The document geometry is measured internally in points (72 pt per inch).
+            let mm_w = bounds.width() * 25.4 / 72.0;
+            let mm_h = bounds.height() * 25.4 / 72.0;
+            let detail = format!("Largura: {mm_w:.2} mm\nAltura: {mm_h:.2} mm\n\nValores calculados pelo retângulo envolvente da seleção. Para cotagem CAD precisa, confira a escala original.");
+            crate::dialogs::confirm::tell(app, "Cotas da seleção", &detail);
+            Ok(json!({"widthMm":mm_w,"heightMm":mm_h}))
+        }
         "file.open" => match s("path") {
             Some(path) => io::open_path(app, &path),
             None => io::open_dialog(app).map(|_| Value::Null),
@@ -2122,6 +2135,7 @@ pub fn menu_tree_named(english_names: bool) -> Vec<(&'static str, Vec<Item>)> {
                 c("New…", "file.newDialog"),
                 c("New from Template…", "file.newFromTemplate"),
                 c("Open…", "file.open"),
+                c("Importar DWG / CDR…", "ui.importCadCdr"),
                 sub("Open Recent Files", {
                     let mut v: Vec<Item> = RECENT_IDS.iter().map(|id| c("Recent File", id)).collect();
                     v.push(Sep);
